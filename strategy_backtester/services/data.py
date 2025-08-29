@@ -17,7 +17,7 @@ def retrieve(ticker: str, start: date, end: date) -> list[Agg]:
 
 
 def store(aggs: list[Agg]) -> Agg:
-    # store all the aggs
+    pass
 
 
 results = retrieve("AAPL", date(2025, 8, 1), date(2025, 8, 7))
