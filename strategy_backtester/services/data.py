@@ -23,4 +23,3 @@ def store(aggregates: list[Agg]) -> Agg:
 def retrieve_and_store(ticker: str, start: date, end: date) -> None:
     aggregates = retrieve(ticker, start, end)
     store(aggregates)
-
