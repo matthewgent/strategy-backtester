@@ -1,4 +1,4 @@
-from strategy_backtester.services.data import retrieve
+from strategy_backtester.services.polygon import retrieve
 from datetime import date
 
 results = retrieve(
