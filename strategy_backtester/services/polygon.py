@@ -1,4 +1,5 @@
 from datetime import date
+from dateutil.relativedelta import relativedelta
 from polygon import RESTClient
 from polygon.rest.models import Agg
 from strategy_backtester.models.ticker import Ticker
@@ -10,8 +11,10 @@ class Polygon:
     def __init__(self) -> None:
         self.client = RESTClient()
 
-    def update(self, ticker: Ticker, years: int) -> None:
-        # calculate min and max dates
+    def update_aggregates(self, ticker: Ticker, years: int) -> None:
+        end = date.today()
+        start = end - relativedelta(years=years)
+
         # check what database values there are (min and max)
         # update for last x years
         pass
