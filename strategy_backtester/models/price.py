@@ -1,13 +1,18 @@
 from datetime import datetime
 from decimal import Decimal
-from sqlalchemy import Numeric, BigInteger, CheckConstraint, TIMESTAMP
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Numeric, BigInteger, CheckConstraint, TIMESTAMP, \
+    ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from strategy_backtester.models.model import Model
+from strategy_backtester.models.ticker import Ticker
 
 
 class Price(Model):
     __tablename__ = 'prices'
+
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    ticker_id: Mapped[int] = mapped_column(ForeignKey('tickers.id'))
+
     open: Mapped[Decimal] = mapped_column(
         Numeric(11, 4),
         CheckConstraint('open >= 0'),
@@ -47,3 +52,5 @@ class Price(Model):
         TIMESTAMP(timezone=True),
         nullable=False,
     )
+
+    ticker: Mapped["Ticker"] = relationship(back_populates="prices")
