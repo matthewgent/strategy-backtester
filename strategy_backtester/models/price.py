@@ -54,3 +54,7 @@ class Price(Model):
     )
 
     ticker: Mapped["Ticker"] = relationship(back_populates="prices")
+
+    def __repr__(self) -> str:
+        return (f"Price(id={self.id!r}, ticker_id={self.ticker_id!r}, "
+                f"open={self.open!r}, recorded_at={self.recorded_at!r})")
