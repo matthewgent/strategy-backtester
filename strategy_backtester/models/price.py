@@ -1,18 +1,17 @@
 from datetime import datetime
 from decimal import Decimal
 from sqlalchemy import Numeric, BigInteger, CheckConstraint, TIMESTAMP, \
-    ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+    String
+from sqlalchemy.orm import Mapped, mapped_column
 from strategy_backtester.models.model import Model
-from strategy_backtester.models.ticker import Ticker
 
 
-class Price(Model):
-    __tablename__ = 'prices'
+class Aggregate(Model):
+    __tablename__ = 'aggregates'
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    ticker_id: Mapped[int] = mapped_column(ForeignKey('tickers.id'))
 
+    ticker: Mapped[str] = mapped_column(String(5))
     open: Mapped[Decimal] = mapped_column(
         Numeric(11, 4),
         CheckConstraint('open >= 0'),
@@ -53,8 +52,6 @@ class Price(Model):
         nullable=False,
     )
 
-    ticker: Mapped["Ticker"] = relationship(back_populates="prices")
-
     def __repr__(self) -> str:
-        return (f"Price(id={self.id!r}, ticker_id={self.ticker_id!r}, "
-                f"open={self.open!r}, recorded_at={self.recorded_at!r})")
+        return (f"Aggregate(id={self.id!r}, ticker={self.ticker!r}, "
+                f"close={self.close!r}, recorded_at={self.recorded_at!r})")
