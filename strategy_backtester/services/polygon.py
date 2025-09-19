@@ -2,6 +2,10 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 from polygon import RESTClient
 from polygon.rest.models import Agg
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from strategy_backtester.models.aggregate import Aggregate
 
 
 class Polygon:
@@ -14,17 +18,24 @@ class Polygon:
         end = date.today()
         start = end - relativedelta(years=years)
 
-        # find min and max dates for ticker, calculate what needs downloading
-        # ignore potentially missing days in the center
-        # retrieve missing data on either end
+        session = Session(engine)
+
+        latest_stmt = (select(Aggregate.recorded_at)
+                       .where(Aggregate.ticker == ticker)
+                       .order_by(Aggregate.recorded_at.desc())
+                       )
+        latest = session.scalar(latest_stmt)
+
+        # find min and max dates for ticker, calculate if we have it all
+        # retrieve all data if we are missing anything (1 API call anyway)
         # store
         pass
 
     def _fetch_aggregates(
-        self,
-        ticker: str,
-        start: date,
-        end: date
+            self,
+            ticker: str,
+            start: date,
+            end: date
     ) -> list[Agg]:
         aggregates = self.client.get_aggs(
             ticker,
