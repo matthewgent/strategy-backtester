@@ -3,8 +3,7 @@ from dateutil.relativedelta import relativedelta
 from polygon import RESTClient
 from polygon.rest.models import Agg
 from sqlalchemy import select
-from sqlalchemy.orm import Session
-
+from strategy_backtester.database import Session
 from strategy_backtester.models.aggregate import Aggregate
 
 
@@ -18,13 +17,19 @@ class Polygon:
         end = date.today()
         start = end - relativedelta(years=years)
 
-        session = Session(engine)
+        with Session() as session:
+            newest_stmt = (select(Aggregate.recorded_at)
+                           .where(Aggregate.ticker == ticker)
+                           .order_by(Aggregate.recorded_at.desc())
+                           )
+            newest = session.scalar(newest_stmt)
+            oldest_stmt = (select(Aggregate.recorded_at)
+                           .where(Aggregate.ticker == ticker)
+                           .order_by(Aggregate.recorded_at.asc())
+                           )
+            oldest = session.scalar(oldest_stmt)
 
-        latest_stmt = (select(Aggregate.recorded_at)
-                       .where(Aggregate.ticker == ticker)
-                       .order_by(Aggregate.recorded_at.desc())
-                       )
-        latest = session.scalar(latest_stmt)
+        print(newest, oldest)
 
         # find min and max dates for ticker, calculate if we have it all
         # retrieve all data if we are missing anything (1 API call anyway)
