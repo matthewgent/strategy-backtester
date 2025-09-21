@@ -4,7 +4,7 @@ from polygon import RESTClient
 from polygon.rest.models import Agg
 from sqlalchemy import select
 from strategy_backtester.database import Session
-from strategy_backtester.models.aggregate import Aggregate
+from strategy_backtester.database.models.aggregate import Aggregate
 
 
 class Polygon:
@@ -51,12 +51,3 @@ class Polygon:
         )
 
         return aggregates
-
-
-def store(aggregates: list[Agg]) -> Agg:
-    pass
-
-
-def retrieve_and_store(ticker: str, start: date, end: date) -> None:
-    aggregates = retrieve(ticker, start, end)
-    store(aggregates)

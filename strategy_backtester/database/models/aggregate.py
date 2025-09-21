@@ -3,7 +3,7 @@ from decimal import Decimal
 from sqlalchemy import Numeric, BigInteger, CheckConstraint, TIMESTAMP, \
     String
 from sqlalchemy.orm import Mapped, mapped_column
-from strategy_backtester.models.model import Model
+from strategy_backtester.database.models.model import Model
 
 
 class Aggregate(Model):

@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from os import getenv as env
 
 connection = env('DATABASE_CONNECTION', 'postgresql+psycopg2')
-user = env('DATABASE_USER', 'user')
+user = env('DATABASE_USER', 'strategy_backtester')
 password = env('DATABASE_PASSWORD', 'password')
 host = env('DATABASE_HOST', 'localhost')
 port = env('DATABASE_PORT', '5432')
